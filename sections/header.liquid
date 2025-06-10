@@ -5,9 +5,17 @@
 </style>
 
 <header>
+  {% if section.settings.enable_sticky %}
+    <a> 
+      <img src="{{ section. }}" >
+    </a>
+  {% else %}  
   <h2 class="header__title">
     {{ shop.name | link_to: routes.root_url }}
   </h2>
+  {% endif %}
+
+
 
   <div class="header__menu">
     {% for link in section.settings.menu.links %}
@@ -63,6 +71,12 @@
   "name": "t:general.header",
   "settings": [
     {
+      "type": "checkbox",
+      "id": "enable_sticky",
+      "label": "t:sections.header.enable_sticky_header",
+      "default": true
+    },
+    {
       "type": "link_list",
       "id": "menu",
       "label": "t:labels.menu"
@@ -71,6 +85,26 @@
       "type": "image_picker",
       "id": "logo",
       "label": "t:global.image.image"
+    },
+    {
+      "type": "range",
+      "id": "logo_max_width",
+      "min": 20,
+      "max": 300,
+      "step": 5,
+      "unit": "px",
+      "label": "t:global.image.width",
+      "default": 140
+    },
+    {
+      "type": "range",
+      "id": "logo_mobile_max_width",
+      "min": 20,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "t:global.image.mobile_width",
+      "default": 100
     },
   ]
 }
