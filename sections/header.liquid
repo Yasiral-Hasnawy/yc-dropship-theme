@@ -1,3 +1,9 @@
+<style>
+  :root {
+    --yc-sticky-header: {% if section.settings.enable_sticky %}1{% else %}0{% endif %};
+  }
+</style>
+
 <header>
   <h2 class="header__title">
     {{ shop.name | link_to: routes.root_url }}
