@@ -11,12 +11,31 @@
   "type": "header",
   "name": "t:general.header",
   "sections": {
+    "announcement_bar": {
+      "type": "announcement-bar",
+      "settings": {
+        "display_mode": "ticker"
+      }
+    },
+    "announcement_bar_2": {
+      "type": "announcement-bar",
+      "settings": {
+        "display_mode": "slider"
+      }
+    },
+    "custom_liquid": {
+      "type": "custom-liquid",
+      "settings": {}
+    },
     "header": {
       "type": "header",
       "settings": {}
     }
   },
   "order": [
+    "announcement_bar",
+    "announcement_bar_2",
+    "custom_liquid",
     "header"
-  ],
+  ]
 }

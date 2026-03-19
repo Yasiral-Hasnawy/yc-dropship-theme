@@ -11,8 +11,23 @@
     --font-primary--weight: {{ settings.type_primary_font.weight }};
     --page-width: {{ settings.max_page_width }};
     --page-margin: {{ settings.min_page_margin }}px;
+    --style-border-radius-theme: {{ settings.theme_corner_radius }}px;
+    --style-border-radius-product-tile: {{ settings.product_tile_corner_radius | default: settings.theme_corner_radius }}px;
     --color-background: {{ settings.background_color }};
     --color-foreground: {{ settings.foreground_color }};
     --style-border-radius-inputs: {{ settings.input_corner_radius }}px;
+    --style-border-radius-buttons: {{ settings.button_corner_radius }}px;
+    --button-primary-background: {{ settings.button_primary_background }};
+    --button-primary-text: {{ settings.button_primary_text }};
+    --button-primary-border: {{ settings.button_primary_border }};
+    --button-primary-background-hover: {{ settings.button_primary_background_hover }};
+    --button-primary-text-hover: {{ settings.button_primary_text_hover }};
+    --button-primary-border-hover: {{ settings.button_primary_border_hover }};
+    --button-secondary-background: {{ settings.button_secondary_background }};
+    --button-secondary-text: {{ settings.button_secondary_text }};
+    --button-secondary-border: {{ settings.button_secondary_border }};
+    --button-secondary-background-hover: {{ settings.button_secondary_background_hover }};
+    --button-secondary-text-hover: {{ settings.button_secondary_text_hover }};
+    --button-secondary-border-hover: {{ settings.button_secondary_border_hover }};
   }
 {% endstyle %}

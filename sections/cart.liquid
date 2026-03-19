@@ -20,13 +20,13 @@
         </td>
         <td>
           <input type="text" name="updates[]" value="{{ item.quantity }}">
-          <input type="submit" value="{{ 'cart.update' | t }}">
+          <input class="button button--secondary" type="submit" value="{{ 'cart.update' | t }}">
         </td>
       </tr>
     {% endfor %}
   </table>
 
-  <input type="submit" name="checkout" value="{{ 'cart.checkout' | t }}">
+  <input class="button button--primary" type="submit" name="checkout" value="{{ 'cart.checkout' | t }}">
 </form>
 
 {% schema %}

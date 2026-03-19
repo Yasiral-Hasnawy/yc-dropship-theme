@@ -10,8 +10,41 @@
 {
   "sections": {
     "main": {
-      "type": "hello-world",
-      "settings": {}
+      "type": "hero",
+      "settings": {
+        "desktop_height": 700,
+        "mobile_height": 480,
+        "enable_parallax": false,
+        "auto_change_slides": true,
+        "change_images_every": 5,
+        "lazy_load_images": false
+      },
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "Fresh arrivals",
+            "heading": "Build your store around a strong first impression",
+            "text": "<p>Use this hero to spotlight a campaign, collection, or bestselling product right away.</p>",
+            "button_label": "Shop now",
+            "button_link": ""
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "Seasonal promotion",
+            "heading": "Rotate slides automatically and keep the message moving",
+            "text": "<p>Control image timing, mobile and desktop height, parallax, and lazy loading directly in the editor.</p>",
+            "button_label": "Explore more",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2"
+      ]
     }
   },
   "order": [

@@ -15,7 +15,7 @@
     value="{{ search.terms | escape }}"
     placeholder="{{ 'search.placeholder' | t }}"
   >
-  <button type="submit">{{ 'search.submit' | t }}</button>
+  <button class="button button--primary" type="submit">{{ 'search.submit' | t }}</button>
 </form>
 
 {% if search.performed %}

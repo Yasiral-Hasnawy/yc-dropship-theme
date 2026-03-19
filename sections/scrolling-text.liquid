@@ -1,0 +1,165 @@
+{% liquid
+  assign scrolling_repeats = 8
+%}
+
+{% if section.settings.text != blank %}
+  <section
+    class="scrolling-text-section full-width"
+    id="ScrollingText-{{ section.id }}"
+    style="
+      --scrolling-text-size: {{ section.settings.text_size }}px;
+      --scrolling-text-spacing: {{ section.settings.spacing }}px;
+      --scrolling-text-speed: {{ section.settings.speed }}s;
+      --scrolling-text-repeat-count: {{ scrolling_repeats }};
+    "
+  >
+    <div class="scrolling-text-section__viewport">
+      <div class="scrolling-text-section__track{% if section.settings.direction == 'right' %} scrolling-text-section__track--reverse{% endif %}">
+        {% for repeat in (1..scrolling_repeats) %}
+          <div class="scrolling-text-section__item" {% if repeat > 1 %}aria-hidden="true"{% endif %}>
+            {% if section.settings.link != blank %}
+              <a href="{{ section.settings.link }}" class="scrolling-text-section__link">
+                <span>{{ section.settings.text | escape }}</span>
+              </a>
+            {% else %}
+              <p class="scrolling-text-section__text">{{ section.settings.text | escape }}</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% stylesheet %}
+  .scrolling-text-section {
+    width: 100%;
+  }
+
+  .scrolling-text-section__viewport {
+    overflow: hidden;
+    width: 100%;
+    padding: var(--scrolling-text-spacing) 0;
+  }
+
+  .scrolling-text-section__track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    animation: scrolling-text-section-marquee var(--scrolling-text-speed) linear infinite;
+  }
+
+  .scrolling-text-section__track--reverse {
+    animation-direction: reverse;
+  }
+
+  .scrolling-text-section__item {
+    flex-shrink: 0;
+    padding-right: clamp(1.5rem, 4vw, 3rem);
+    white-space: nowrap;
+  }
+
+  .scrolling-text-section__link,
+  .scrolling-text-section__text {
+    margin: 0;
+    color: inherit;
+    text-decoration: none;
+    font-size: var(--scrolling-text-size);
+    line-height: 1.1;
+  }
+
+  .scrolling-text-section__link {
+    display: inline-block;
+  }
+
+  .scrolling-text-section__link:hover,
+  .scrolling-text-section__link:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 0.14em;
+  }
+
+  @keyframes scrolling-text-section-marquee {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(calc(-1 * (100% / var(--scrolling-text-repeat-count))));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scrolling-text-section__track,
+    .scrolling-text-section__track--reverse {
+      animation-duration: 0.01ms;
+      animation-iteration-count: 1;
+      transform: translateX(0);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Scrolling text",
+  "tag": "section",
+  "class": "section-scrolling-text",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Free shipping on orders over $50"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text size",
+      "min": 12,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "spacing",
+      "label": "Spacing",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Direction",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Speed",
+      "min": 5,
+      "max": 60,
+      "step": 1,
+      "unit": "s",
+      "default": 18
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scrolling text"
+    }
+  ]
+}
+{% endschema %}

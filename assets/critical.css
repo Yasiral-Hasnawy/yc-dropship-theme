@@ -39,9 +39,14 @@ select {
   color: currentcolor;
 }
 
+button {
+  font: inherit;
+}
+
 dialog {
   background-color: var(--color-background);
   color: var(--color-foreground);
+  border-radius: var(--style-border-radius-theme);
 }
 
 p {
@@ -76,6 +81,73 @@ body {
   font-family: var(--font-primary--family);
   background-color: var(--color-background);
   color: var(--color-foreground);
+}
+
+.button,
+.shopify-payment-button__button--unbranded {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--style-border-radius-buttons);
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  appearance: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.button--primary {
+  background-color: var(--button-primary-background);
+  color: var(--button-primary-text);
+  border-color: var(--button-primary-border);
+}
+
+.button--primary:hover,
+.button--primary:focus-visible {
+  background-color: var(--button-primary-background-hover);
+  color: var(--button-primary-text-hover);
+  border-color: var(--button-primary-border-hover);
+}
+
+.button--secondary,
+.shopify-payment-button__button--unbranded {
+  background-color: var(--button-secondary-background);
+  color: var(--button-secondary-text);
+  border-color: var(--button-secondary-border);
+}
+
+.button--secondary:hover,
+.button--secondary:focus-visible,
+.shopify-payment-button__button--unbranded:hover,
+.shopify-payment-button__button--unbranded:focus-visible {
+  background-color: var(--button-secondary-background-hover);
+  color: var(--button-secondary-text-hover);
+  border-color: var(--button-secondary-border-hover);
+}
+
+.button:disabled,
+.button[aria-disabled='true'],
+.shopify-payment-button__button--unbranded[disabled] {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.shopify-payment-button {
+  margin-top: 0.75rem;
+}
+
+.shopify-payment-button__button--unbranded {
+  width: 100%;
 }
 
 /** Section layout utilities */

@@ -1,0 +1,48 @@
+{% liquid
+  assign card_product = product
+  assign card_sizes = sizes | default: '100vw'
+  assign placeholder_number = placeholder_index | default: 1
+%}
+
+<article class="featured-collection-card">
+  {% if card_product != blank %}
+    <a class="featured-collection-card__link" href="{{ card_product.url }}">
+      <div class="featured-collection-card__media">
+        {% if card_product.featured_image != blank %}
+          {{
+            card_product.featured_image
+            | image_url: width: 900
+            | image_tag:
+              class: 'featured-collection-card__image',
+              widths: '320, 480, 640, 900',
+              sizes: card_sizes,
+              loading: 'lazy',
+              alt: card_product.featured_image.alt | default: card_product.title
+          }}
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag: 'featured-collection-card__image featured-collection-card__image--placeholder' }}
+        {% endif %}
+      </div>
+
+      <div class="featured-collection-card__content">
+        <h3 class="featured-collection-card__title">{{ card_product.title | escape }}</h3>
+        <p class="featured-collection-card__price">{{ card_product.price | money }}</p>
+      </div>
+    </a>
+  {% else %}
+    {% liquid
+      assign placeholder_name = 'product-' | append: placeholder_number
+    %}
+
+    <div class="featured-collection-card__link featured-collection-card__link--placeholder">
+      <div class="featured-collection-card__media">
+        {{ placeholder_name | placeholder_svg_tag: 'featured-collection-card__image featured-collection-card__image--placeholder' }}
+      </div>
+
+      <div class="featured-collection-card__content">
+        <h3 class="featured-collection-card__title">{{ 'Product' | append: ' ' | append: placeholder_number }}</h3>
+        <p class="featured-collection-card__price">{{ 1999 | money }}</p>
+      </div>
+    </div>
+  {% endif %}
+</article>

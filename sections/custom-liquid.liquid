@@ -1,0 +1,35 @@
+{% if section.settings.custom_liquid != blank %}
+  <div class="custom-liquid-section full-width">
+    <div class="custom-liquid-section__inner">
+      {{ section.settings.custom_liquid }}
+    </div>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .custom-liquid-section__inner {
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    margin: 0 auto;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Custom liquid",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "liquid",
+      "id": "custom_liquid",
+      "label": "Custom liquid"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom liquid"
+    }
+  ]
+}
+{% endschema %}
