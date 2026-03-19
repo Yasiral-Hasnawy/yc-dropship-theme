@@ -8,5 +8,9 @@
  * ------------------------------------------------------------
  */
 {
-  "current": {}
+  "current": {
+    "theme_corner_radius": 8,
+    "button_corner_radius": 4,
+    "content_for_index": []
+  }
 }
