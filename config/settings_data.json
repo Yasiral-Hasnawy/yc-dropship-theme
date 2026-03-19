@@ -11,6 +11,7 @@
   "current": {
     "theme_corner_radius": 8,
     "button_corner_radius": 4,
+    "collection_tile_style": "overlay_bg",
     "content_for_index": []
   }
 }
