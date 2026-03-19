@@ -68,7 +68,7 @@
         "heading": "Image-led storytelling with a stronger layout",
         "text": "<p>Show two layered images beside a sharp message so the section feels editorial, product-focused, and easy to scan.</p>",
         "button_label": "Shop now",
-        "button_link": "",
+        "button_link": "shopify://collections/frontpage",
         "button_style": "primary",
         "text_alignment": "left",
         "image_size": "50",
