@@ -331,6 +331,8 @@
   min-width: 56px;
   min-height: 56px;
   position: relative;
+  padding: 0;
+  border: 0;
   color: transparent;
 }
 
@@ -342,6 +344,10 @@
   background: rgba(255, 255, 255, 0.72);
   color: #111;
   font-size: 0.72rem;
+}
+
+.product-info__option-button--color_swatch.is-active {
+  box-shadow: inset 0 0 0 1px rgba(16, 24, 32, 0.72);
 }
 
 .product-info__option-button--variant_image {

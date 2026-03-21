@@ -111,7 +111,9 @@
                   <span class="product-info__option-image-wrap product-info__option-image-wrap--fallback">{{ value | slice: 0 }}</span>
                 {% endif %}
               {% endif %}
-              <span class="product-info__option-label" {% if swatch_label_style != blank %}style="{{ swatch_label_style }}"{% endif %}>{{ value }}</span>
+              {% if picker_mode != 'color_swatch' or block.settings.show_color_labels %}
+                <span class="product-info__option-label" {% if swatch_label_style != blank %}style="{{ swatch_label_style }}"{% endif %}>{{ value }}</span>
+              {% endif %}
             </button>
           {% endfor %}
         </div>
