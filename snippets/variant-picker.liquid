@@ -5,11 +5,15 @@
         assign option_name_downcase = option.name | downcase
         assign is_color = false
         assign is_size = false
+        assign picker_mode = 'normal'
         if option_name_downcase contains 'color' or option_name_downcase contains 'colour'
           assign is_color = true
         endif
         if option_name_downcase contains 'size'
           assign is_size = true
+        endif
+        if is_color
+          assign picker_mode = block.settings.color_display | default: 'color_swatch'
         endif
       %}
 
@@ -24,42 +28,54 @@
           {% endif %}
         </legend>
 
-        {% case block.settings.picker_style %}
-          {% when 'dropdown' %}
-            <label class="product-info__dropdown-label">
-              <span class="visually-hidden">{{ option.name }}</span>
-              <select class="product-info__dropdown" data-option-select data-option-name="{{ option.name }}">
-                {% for value in option.values %}
-                  <option value="{{ value | escape }}" {% if value == option.selected_value %}selected{% endif %}>
-                    {{ value }}
-                  </option>
-                {% endfor %}
-              </select>
-            </label>
-          {% else %}
-            <div class="product-info__option-values product-info__option-values--{{ block.settings.picker_style }}">
-              {% for value in option.values %}
-                {% liquid
-                  assign swatch_style = ''
-                  if is_color
-                    assign swatch_style = 'background:' | append: value | append: ';'
+        <div class="product-info__option-values product-info__option-values--{{ picker_mode }}">
+          {% for value in option.values %}
+            {% liquid
+              assign button_classes = 'product-info__option-button'
+              assign button_classes = button_classes | append: ' '
+              assign button_classes = button_classes | append: 'product-info__option-button--' | append: picker_mode
+              assign button_style = ''
+              assign image_markup = ''
+
+              if value == option.selected_value
+                assign button_classes = button_classes | append: ' is-active'
+              endif
+
+              if picker_mode == 'color_swatch'
+                assign button_style = 'background:' | append: value | append: ';'
+              elsif picker_mode == 'variant_image'
+                for variant in product.variants
+                  assign option_index = option.position | minus: 1
+                  if variant.options[option_index] == value and variant.featured_image
+                    capture image_markup
+                      echo variant.featured_image | image_url: width: 160, height: 160, crop: 'center' | image_tag: loading: 'lazy', class: 'product-info__option-image'
+                    endcapture
+                    break
                   endif
-                %}
-                <button
-                  type="button"
-                  class="product-info__option-button {% if value == option.selected_value %}is-active{% endif %} {% if is_color %}product-info__option-button--swatch{% endif %}"
-                  data-option-button
-                  data-option-name="{{ option.name }}"
-                  data-option-value="{{ value | escape }}"
-                  {% if is_color %}
-                    style="{{ swatch_style }}"
-                  {% endif %}
-                >
-                  <span>{{ value }}</span>
-                </button>
-              {% endfor %}
-            </div>
-        {% endcase %}
+                endfor
+              endif
+            %}
+            <button
+              type="button"
+              class="{{ button_classes }}"
+              data-option-button
+              data-option-name="{{ option.name }}"
+              data-option-value="{{ value | escape }}"
+              {% if button_style != blank %}
+                style="{{ button_style }}"
+              {% endif %}
+            >
+              {% if picker_mode == 'variant_image' %}
+                {% if image_markup != blank %}
+                  <span class="product-info__option-image-wrap">{{ image_markup }}</span>
+                {% else %}
+                  <span class="product-info__option-image-wrap product-info__option-image-wrap--fallback">{{ value | slice: 0 }}</span>
+                {% endif %}
+              {% endif %}
+              <span class="product-info__option-label">{{ value }}</span>
+            </button>
+          {% endfor %}
+        </div>
       </fieldset>
     {% endfor %}
   </div>

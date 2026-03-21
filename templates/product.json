@@ -31,7 +31,6 @@
         "variants": {
           "type": "variant_picker",
           "settings": {
-            "picker_style": "swatch",
             "show_size_chart": false,
             "size_chart_label": "Size guide"
           }
