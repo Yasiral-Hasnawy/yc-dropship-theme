@@ -24,10 +24,14 @@
           "type": "price",
           "settings": {}
         },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
         "variants": {
           "type": "variant_picker",
           "settings": {
-            "color_display": "variant_image",
+            "color_display": "color_swatch",
             "show_size_chart": false,
             "size_chart_label": "Size guide"
           }
@@ -36,16 +40,16 @@
           "type": "quantity_selector",
           "settings": {}
         },
+        "inventory": {
+          "type": "inventory",
+          "settings": {}
+        },
         "buy": {
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": true,
             "sticky_label": "Add to cart"
           }
-        },
-        "description": {
-          "type": "description",
-          "settings": {}
         },
         "accordion": {
           "type": "accordion",
@@ -60,10 +64,11 @@
         "vendor",
         "title",
         "price",
+        "description",
         "variants",
         "quantity",
+        "inventory",
         "buy",
-        "description",
         "accordion"
       ],
       "settings": {
