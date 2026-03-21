@@ -31,11 +31,14 @@
         <div class="product-info__option-values product-info__option-values--{{ picker_mode }}">
           {% for value in option.values %}
             {% liquid
+              assign normalized_value = value | strip | downcase
               assign button_classes = 'product-info__option-button'
               assign button_classes = button_classes | append: ' '
               assign button_classes = button_classes | append: 'product-info__option-button--' | append: picker_mode
               assign button_style = ''
               assign image_markup = ''
+              assign swatch_label_style = ''
+              assign swatch_image = blank
 
               if value == option.selected_value
                 assign button_classes = button_classes | append: ' is-active'
@@ -43,14 +46,41 @@
 
               if picker_mode == 'color_swatch'
                 assign button_style = 'background:' | append: value | append: ';'
+
+                assign swatch_mapping_lines = settings.color_swatch_mappings | newline_to_br | split: '<br />'
+                for mapping_line in swatch_mapping_lines
+                  assign mapping_parts = mapping_line | split: ':'
+                  assign mapping_key = mapping_parts.first | strip | downcase
+                  if mapping_key == normalized_value
+                    assign mapping_value = mapping_line | remove_first: mapping_parts.first | remove_first: ':' | strip
+                    if mapping_value != blank
+                      assign button_style = 'background:' | append: mapping_value | append: ';'
+                      assign swatch_label_style = 'background: rgba(255, 255, 255, 0.78);'
+                    endif
+                    break
+                  endif
+                endfor
               elsif picker_mode == 'variant_image'
                 for variant in product.variants
                   assign option_index = option.position | minus: 1
-                  if variant.options[option_index] == value and variant.featured_image
-                    capture image_markup
-                      echo variant.featured_image | image_url: width: 160, height: 160, crop: 'center' | image_tag: loading: 'lazy', class: 'product-info__option-image'
-                    endcapture
-                    break
+                  if variant.options[option_index] == value
+                    if variant.featured_media and variant.featured_media.preview_image
+                      assign swatch_image = variant.featured_media.preview_image
+                    elsif variant.image
+                      assign swatch_image = variant.image
+                    elsif variant.featured_image
+                      assign swatch_image = variant.featured_image
+                    endif
+
+                    if swatch_image != blank
+                      capture image_markup
+                        echo swatch_image | image_url: width: 160, height: 160, crop: 'center' | image_tag: loading: 'lazy', class: 'product-info__option-image', widths: '80, 120, 160'
+                      endcapture
+                    endif
+
+                    if image_markup != blank
+                      break
+                    endif
                   endif
                 endfor
               endif
@@ -72,7 +102,7 @@
                   <span class="product-info__option-image-wrap product-info__option-image-wrap--fallback">{{ value | slice: 0 }}</span>
                 {% endif %}
               {% endif %}
-              <span class="product-info__option-label">{{ value }}</span>
+              <span class="product-info__option-label" {% if swatch_label_style != blank %}style="{{ swatch_label_style }}"{% endif %}>{{ value }}</span>
             </button>
           {% endfor %}
         </div>

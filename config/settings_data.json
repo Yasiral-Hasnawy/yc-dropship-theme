@@ -8,8 +8,5 @@
  * ------------------------------------------------------------
  */
 {
-  "current": {
-    "button_corner_radius": 8,
-    "content_for_index": []
-  }
+  "current": {}
 }

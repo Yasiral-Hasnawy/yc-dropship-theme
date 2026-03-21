@@ -257,6 +257,13 @@
           }
         ],
         "default": "round"
+      },
+      {
+        "type": "textarea",
+        "id": "color_swatch_mappings",
+        "label": "Color swatch mappings",
+        "info": "One per line, for example: Black: #111111",
+        "default": "Black: #111111\nWhite: #F5F5F5\nCream: #F3E7D3\nBeige: #D8C3A5\nNavy: #1F2A44"
       }
     ]
   },
