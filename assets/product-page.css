@@ -338,6 +338,16 @@
   color: transparent;
 }
 
+.product-info__option-values--color_swatch .product-info__option-button {
+  min-width: 56px;
+  min-height: 56px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--product-radius-surface);
+  box-shadow: 0 0 0 1px var(--colorBorder);
+  appearance: none;
+}
+
 .product-info__option-button--color_swatch .product-info__option-label {
   position: absolute;
   inset: auto auto 8px 8px;
@@ -352,6 +362,17 @@
   box-shadow:
     0 0 0 1px var(--colorBorder),
     inset 0 0 0 1px rgba(16, 24, 32, 0.72);
+}
+
+.product-info__option-values--color_swatch .product-info__option-button.is-active {
+  border: 0;
+  box-shadow:
+    0 0 0 1px var(--colorBorder),
+    inset 0 0 0 1px rgba(16, 24, 32, 0.72);
+}
+
+.product-info__option-values--labels-hidden .product-info__option-label {
+  display: none;
 }
 
 .product-info__option-button--variant_image {

@@ -37,7 +37,7 @@
           {% endif %}
         </legend>
 
-        <div class="product-info__option-values product-info__option-values--{{ picker_mode }}">
+        <div class="product-info__option-values product-info__option-values--{{ picker_mode }} {% if picker_mode == 'color_swatch' and block.settings.show_color_labels == false %}product-info__option-values--labels-hidden{% endif %}">
           {% for value in option.values %}
             {% liquid
               assign normalized_value = value | strip | downcase
