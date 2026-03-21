@@ -1,0 +1,66 @@
+{% if product.has_only_default_variant == false %}
+  <div class="product-info__variants" data-variant-picker>
+    {% for option in product.options_with_values %}
+      {% liquid
+        assign option_name_downcase = option.name | downcase
+        assign is_color = false
+        assign is_size = false
+        if option_name_downcase contains 'color' or option_name_downcase contains 'colour'
+          assign is_color = true
+        endif
+        if option_name_downcase contains 'size'
+          assign is_size = true
+        endif
+      %}
+
+      <fieldset class="product-info__option-group" data-option-position="{{ option.position }}">
+        <legend class="product-info__option-header">
+          <span>{{ option.name }}</span>
+          <span class="product-info__option-value" data-selected-option="{{ option.position }}">
+            {{ option.selected_value }}
+          </span>
+          {% if block.settings.show_size_chart and is_size %}
+            <button type="button" class="product-info__size-guide">{{ block.settings.size_chart_label }}</button>
+          {% endif %}
+        </legend>
+
+        {% case block.settings.picker_style %}
+          {% when 'dropdown' %}
+            <label class="product-info__dropdown-label">
+              <span class="visually-hidden">{{ option.name }}</span>
+              <select class="product-info__dropdown" data-option-select data-option-name="{{ option.name }}">
+                {% for value in option.values %}
+                  <option value="{{ value | escape }}" {% if value == option.selected_value %}selected{% endif %}>
+                    {{ value }}
+                  </option>
+                {% endfor %}
+              </select>
+            </label>
+          {% else %}
+            <div class="product-info__option-values product-info__option-values--{{ block.settings.picker_style }}">
+              {% for value in option.values %}
+                {% liquid
+                  assign swatch_style = ''
+                  if is_color
+                    assign swatch_style = 'background:' | append: value | append: ';'
+                  endif
+                %}
+                <button
+                  type="button"
+                  class="product-info__option-button {% if value == option.selected_value %}is-active{% endif %} {% if is_color %}product-info__option-button--swatch{% endif %}"
+                  data-option-button
+                  data-option-name="{{ option.name }}"
+                  data-option-value="{{ value | escape }}"
+                  {% if is_color %}
+                    style="{{ swatch_style }}"
+                  {% endif %}
+                >
+                  <span>{{ value }}</span>
+                </button>
+              {% endfor %}
+            </div>
+        {% endcase %}
+      </fieldset>
+    {% endfor %}
+  </div>
+{% endif %}

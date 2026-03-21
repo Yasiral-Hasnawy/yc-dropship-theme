@@ -1,7 +1,7 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Skeleton",
+    "theme_name": "YC Web Design Dropship",
     "theme_version": "0.1.0",
     "theme_author": "Shopify",
     "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
@@ -178,6 +178,89 @@
     ]
   },
   {
+    "name": "Product tiles",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_quick_shop",
+        "label": "Enable quick shop feature",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "quick_shop_button_text",
+        "label": "Quick shop button text",
+        "default": "Quick view"
+      },
+      {
+        "type": "select",
+        "id": "product_tile_image_size",
+        "label": "Force image size",
+        "options": [
+          {
+            "value": "natural",
+            "label": "Natural"
+          },
+          {
+            "value": "square",
+            "label": "Square (1:1)"
+          },
+          {
+            "value": "portrait",
+            "label": "Portrait (4:5)"
+          },
+          {
+            "value": "landscape",
+            "label": "Landscape (4:3)"
+          }
+        ],
+        "default": "square"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_tile_zoom_image",
+        "label": "Zoom image to fill space",
+        "default": false
+      },
+      {
+        "type": "paragraph",
+        "content": "No effect when grid image size set to 'Natural'."
+      },
+      {
+        "type": "checkbox",
+        "id": "product_tile_show_second_image",
+        "label": "Hover to reveal second image",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Color swatches"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_color_swatches",
+        "label": "Enable color swatches",
+        "default": false
+      },
+      {
+        "type": "radio",
+        "id": "product_tile_swatch_style",
+        "label": "Swatch style",
+        "options": [
+          {
+            "value": "round",
+            "label": "Round"
+          },
+          {
+            "value": "square",
+            "label": "Square"
+          }
+        ],
+        "default": "round"
+      }
+    ]
+  },
+  {
     "name": "Colelction Tiles",
     "settings": [
       {
@@ -199,6 +282,10 @@
           }
         ],
         "default": "below"
+      },
+      {
+        "type": "paragraph",
+        "content": "Text on image overlay uses a subtle bottom fade for contrast. Text on image with bg places the title inside a small background label over the image."
       },
       {
         "type": "select",
@@ -255,6 +342,18 @@
           }
         ],
         "default": "left"
+      },
+      {
+        "type": "paragraph",
+        "content": "Text alignment applies to all collection tile styles. For text on image with bg, it also controls whether the label sits left, center, or right on the image."
+      },
+      {
+        "type": "header",
+        "content": "Text on image with bg only"
+      },
+      {
+        "type": "paragraph",
+        "content": "The settings below only apply when Style is set to Text on image with bg."
       },
       {
         "type": "color",

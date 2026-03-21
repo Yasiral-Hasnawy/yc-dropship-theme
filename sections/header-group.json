@@ -11,54 +11,31 @@
   "type": "header",
   "name": "t:general.header",
   "sections": {
-    "header": {
-      "type": "header",
+    "announcement_bar": {
+      "type": "announcement-bar",
       "settings": {
-        "logo": "shopify://shop_images/Naamloos_45.png",
-        "logo_width": 160,
-        "menu": "main-menu",
-        "enable_dropdown_hover": true,
-        "show_mega_menu_images": true,
-        "header_layout": "logo-left-menu-center",
-        "header_style": "sticky",
-        "overlay_homepage": false,
-        "overlay_collection": false,
-        "show_language_selector": false,
-        "show_currency_selector": false,
-        "show_currency_flags": false,
-        "show_account_icon": true,
-        "mobile_menu_title": "Menu",
-        "customer_account_menu": "customer-account-main-menu"
+        "display_mode": "ticker"
       }
     },
-    "announcement_bar_WCErVi": {
+    "announcement_bar_2": {
       "type": "announcement-bar",
-      "blocks": {
-        "announcement_CFFQRk": {
-          "type": "announcement",
-          "settings": {
-            "text": "Free shipping on orders over $75",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "announcement_CFFQRk"
-      ],
-      "name": "Announcement bar",
       "settings": {
-        "display_mode": "ticker",
-        "autoplay": true,
-        "autoplay_interval": 4,
-        "scroll_speed": 25,
-        "background": "#111111",
-        "text_color": "#FFFFFF",
-        "alignment": "center"
+        "display_mode": "slider"
       }
+    },
+    "custom_liquid": {
+      "type": "custom-liquid",
+      "settings": {}
+    },
+    "header": {
+      "type": "header",
+      "settings": {}
     }
   },
   "order": [
-    "header",
-    "announcement_bar_WCErVi"
+    "announcement_bar",
+    "announcement_bar_2",
+    "custom_liquid",
+    "header"
   ]
 }

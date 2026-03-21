@@ -1,0 +1,190 @@
+{% liquid
+  assign lower_zone_types = 'accordion,text,image,button,share,complementary_products' | split: ','
+%}
+
+{% if placement == blank %}
+  {% assign placement = 'info' %}
+{% endif %}
+
+{% assign sticky_label = 'Add to cart' %}
+{% for sticky_block in section.blocks %}
+  {% if sticky_block.type == 'buy_buttons' and sticky_block.settings.sticky_label != blank %}
+    {% assign sticky_label = sticky_block.settings.sticky_label %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+<div class="product-info" data-product-info data-placement="{{ placement }}">
+  {% form 'product', product, class: 'product-info__form', data-product-form: '' %}
+    {% assign block_group = '' %}
+
+    {% for block in section.blocks %}
+      {% liquid
+        assign block_placement = 'info'
+        if lower_zone_types contains block.type
+          assign block_placement = block.settings.placement | default: 'info'
+        endif
+
+        if block_placement != placement
+          continue
+        endif
+
+        assign current_group = 'supporting'
+        if block.type == 'vendor' or block.type == 'title' or block.type == 'sku' or block.type == 'badges' or block.type == 'price' or block.type == 'rating' or block.type == 'payment_terms'
+          assign current_group = 'basic'
+        elsif block.type == 'variant_picker' or block.type == 'quantity_selector' or block.type == 'inventory' or block.type == 'buy_buttons'
+          assign current_group = 'purchase'
+        endif
+      %}
+
+      {% if block_group != current_group %}
+        {% if block_group != '' %}
+          </div>
+        {% endif %}
+        <div class="product-info__group product-info__group--{{ current_group }}">
+        {% assign block_group = current_group %}
+      {% endif %}
+
+      <div class="product-info__block product-info__block--{{ block.type }}" {{ block.shopify_attributes }}>
+        {% case block.type %}
+          {% when 'vendor' %}
+            <p class="product-info__eyebrow">{{ product.vendor }}</p>
+          {% when 'title' %}
+            <h1 class="product-info__title">{{ product.title }}</h1>
+          {% when 'sku' %}
+            <p class="product-info__meta" data-product-sku>
+              {% if current_variant.sku != blank %}
+                SKU: {{ current_variant.sku }}
+              {% endif %}
+            </p>
+          {% when 'badges' %}
+            <div class="product-info__badges">
+              {% for badge_index in (1..3) %}
+                {% assign badge_key = 'badge_' | append: badge_index %}
+                {% assign badge_text = block.settings[badge_key] %}
+                {% if badge_text != blank %}
+                  <span class="product-info__badge">{{ badge_text }}</span>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% when 'price' %}
+            <div class="product-info__price-wrap">
+              <p class="product-info__price" data-product-price>{{ current_variant.price | money }}</p>
+              {% if current_variant.compare_at_price > current_variant.price %}
+                <p class="product-info__compare" data-product-compare-price>{{ current_variant.compare_at_price | money }}</p>
+              {% else %}
+                <p class="product-info__compare" data-product-compare-price hidden></p>
+              {% endif %}
+            </div>
+          {% when 'rating' %}
+            <div class="product-info__rating" aria-label="{{ block.settings.rating }} out of 5 stars">
+              <span>{{ block.settings.rating }}/5</span>
+              <span class="product-info__rating-count">{{ block.settings.rating_count }} reviews</span>
+            </div>
+          {% when 'payment_terms' %}
+            <div class="product-info__meta">{{ form | payment_terms }}</div>
+          {% when 'separator' %}
+            <hr class="product-info__separator">
+          {% when 'description' %}
+            <div class="product-info__description rte">{{ product.description }}</div>
+          {% when 'variant_picker' %}
+            {% render 'variant-picker', product: product, current_variant: current_variant, block: block %}
+          {% when 'quantity_selector' %}
+            <label class="product-info__quantity">
+              <span>Quantity</span>
+              <input type="number" min="1" name="quantity" value="1">
+            </label>
+          {% when 'inventory' %}
+            <p class="product-info__inventory" data-product-inventory>
+              {% if current_variant.available %}
+                {% if current_variant.inventory_quantity > 0 %}
+                  {{ current_variant.inventory_quantity }} in stock
+                {% else %}
+                  Available to order
+                {% endif %}
+              {% else %}
+                Unavailable
+              {% endif %}
+            </p>
+          {% when 'buy_buttons' %}
+            {% render 'buy-buttons', form: form, current_variant: current_variant, block: block %}
+          {% when 'text' %}
+            {% if block.settings.heading != blank %}
+              <h2 class="product-info__support-heading">{{ block.settings.heading }}</h2>
+            {% endif %}
+            <div class="product-info__support-copy rte">{{ block.settings.content }}</div>
+          {% when 'accordion' %}
+            <details class="product-info__accordion">
+              <summary>{{ block.settings.heading }}</summary>
+              <div class="product-info__accordion-content rte">{{ block.settings.content }}</div>
+            </details>
+          {% when 'image' %}
+            {% if block.settings.image %}
+              <figure class="product-info__editorial-image">
+                {{
+                  block.settings.image
+                  | image_url: width: 1400
+                  | image_tag: loading: 'lazy', class: 'product-info__editorial-image-tag'
+                }}
+                {% if block.settings.caption != blank %}
+                  <figcaption>{{ block.settings.caption }}</figcaption>
+                {% endif %}
+              </figure>
+            {% endif %}
+          {% when 'button' %}
+            {% if block.settings.label != blank and block.settings.link != blank %}
+              <a href="{{ block.settings.link }}" class="button button--secondary">{{ block.settings.label }}</a>
+            {% endif %}
+          {% when 'share' %}
+            <div class="product-info__share">
+              <a href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url | append: product.url | url_encode }}" target="_blank" rel="noopener">Facebook</a>
+              <a href="https://pinterest.com/pin/create/button/?url={{ shop.url | append: product.url | url_encode }}" target="_blank" rel="noopener">Pinterest</a>
+            </div>
+          {% when 'complementary_products' %}
+            {% if block.settings.products != blank %}
+              <div class="product-info__complementary">
+                <h2 class="product-info__support-heading">{{ block.settings.heading }}</h2>
+                <div class="product-info__complementary-grid">
+                  {% for complementary_product in block.settings.products %}
+                    <a href="{{ complementary_product.url }}" class="product-info__complementary-card">
+                      <div class="product-info__complementary-media">
+                        {% if complementary_product.featured_image %}
+                          {{
+                            complementary_product.featured_image
+                            | image_url: width: 360, height: 450, crop: 'center'
+                            | image_tag: loading: 'lazy'
+                          }}
+                        {% endif %}
+                      </div>
+                      <div>
+                        <p>{{ complementary_product.title }}</p>
+                        <p class="product-info__meta">{{ complementary_product.price | money }}</p>
+                      </div>
+                    </a>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+        {% endcase %}
+      </div>
+    {% endfor %}
+
+    {% if block_group != '' %}
+      </div>
+    {% endif %}
+  {% endform %}
+
+  {% if placement == 'info' and section.settings.enable_sticky_bar %}
+    <div class="product-sticky-bar" data-sticky-bar hidden>
+      <div class="product-sticky-bar__content">
+        <div>
+          <p class="product-sticky-bar__title">{{ product.title }}</p>
+          <p class="product-sticky-bar__price" data-sticky-price>{{ current_variant.price | money }}</p>
+        </div>
+        <button type="button" class="button button--primary" data-sticky-submit>
+          {{ sticky_label }}
+        </button>
+      </div>
+    </div>
+  {% endif %}
+</div>

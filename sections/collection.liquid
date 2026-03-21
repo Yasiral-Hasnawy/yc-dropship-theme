@@ -5,37 +5,67 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 {% endcomment %}
 
-<h1>{{ collection.title }}</h1>
+{% liquid
+  assign image_sizes = '(max-width: 749px) 50vw, (max-width: 989px) 50vw, 25vw'
+%}
 
 <div class="collection-products">
-  {% paginate collection.products by 20 %}
-    {% for product in collection.products %}
-      <div class="collection-product">
-        {% if product.featured_image %}
-          {% render 'image',
-            class: 'collection-product__image',
-            image: product.featured_image,
-            url: product.url,
-            width: 400,
-            height: 400,
-            crop: 'center'
-          %}
-        {% endif %}
-        <div class="collection-product__content">
-          <p>{{ product.title | escape | link_to: product.url }}</p>
-          <p>{{ product.price | money }}</p>
-        </div>
-      </div>
-    {% endfor %}
+  <h1 class="collection-products__heading">{{ collection.title }}</h1>
 
-    {{ paginate | default_pagination }}
+  {% paginate collection.products by 20 %}
+    <div class="collection-products__grid" role="list">
+      {% for product in collection.products %}
+        <div class="collection-products__item" role="listitem">
+          {% render 'grid-item', product: product, sizes: image_sizes %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="collection-products__pagination">
+      {{ paginate | default_pagination }}
+    </div>
   {% endpaginate %}
 </div>
 
 {% stylesheet %}
   .collection-products {
+    width: min(var(--page-width), calc(100% - var(--page-margin) * 2));
+    margin: 0 auto;
+    padding: 40px 0 56px;
+  }
+
+  .collection-products__heading {
+    margin-bottom: 24px;
+  }
+
+  .collection-products__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .collection-products__pagination {
+    margin-top: 28px;
+  }
+
+  @media (max-width: 989px) {
+    .collection-products__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 749px) {
+    .collection-products {
+      padding: 32px 0 40px;
+    }
+
+    .collection-products__heading {
+      margin-bottom: 20px;
+    }
+
+    .collection-products__grid {
+      gap: 16px;
+    }
   }
 {% endstylesheet %}
 

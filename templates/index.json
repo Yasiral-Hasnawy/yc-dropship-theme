@@ -11,114 +11,43 @@
   "sections": {
     "main": {
       "type": "hero",
-      "blocks": {
-        "slide_1": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/Noctiq_Hero_Desktop.png",
-            "mobile_image": "shopify://shop_images/Gemini_Generated_Image_yh0pvxyh0pvxyh0p.jpg",
-            "eyebrow": "Fresh arrivals",
-            "heading": "Build your store around a strong first impression",
-            "text": "<p>Use this hero to spotlight a campaign, collection, or bestselling product right away.</p>",
-            "button_label": "Shop now",
-            "button_link": "",
-            "button_style": "primary"
-          }
-        }
-      },
-      "block_order": [
-        "slide_1"
-      ],
       "settings": {
-        "desktop_height": 480,
+        "desktop_height": 700,
         "mobile_height": 480,
         "enable_parallax": false,
         "auto_change_slides": true,
         "change_images_every": 5,
-        "lazy_load_images": false,
-        "desktop_text_vertical": "center",
-        "desktop_text_horizontal": "left",
-        "desktop_heading_size": 52,
-        "desktop_body_size": 17,
-        "mobile_text_vertical": "end",
-        "mobile_text_horizontal": "left",
-        "mobile_heading_size": 28,
-        "mobile_body_size": 15
-      }
-    },
-    "scrolling_text_M44UKU": {
-      "type": "scrolling-text",
-      "name": "Scrolling text",
-      "settings": {
-        "text": "Free shipping on orders over $50",
-        "link": "",
-        "text_size": 24,
-        "spacing": 16,
-        "direction": "left",
-        "speed": 18
-      }
-    },
-    "image_with_text_aFKBUw": {
-      "type": "image-with-text",
-      "name": "Image with text",
-      "settings": {
-        "image": "shopify://shop_images/Add_a_heading_6e5f9b7c-ca94-45d6-a90f-5fc99864f139.png",
-        "image_2": "shopify://shop_images/e847c802-218b-452f-b60f-dc56aa2c4438.png",
-        "subheading": "Fresh arrivals",
-        "heading": "Image-led storytelling with a stronger layout",
-        "text": "<p>Show two layered images beside a sharp message so the section feels editorial, product-focused, and easy to scan.</p>",
-        "button_label": "Shop now",
-        "button_link": "shopify://collections/frontpage",
-        "button_style": "primary",
-        "text_alignment": "left",
-        "image_size": "50",
-        "layout": "right",
-        "show_section_divider": false,
-        "show_top_padding": true,
-        "show_bottom_padding": true,
-        "lazy_load_images": true
-      }
-    },
-    "collection_list_yr74nq": {
-      "type": "collection-list",
+        "lazy_load_images": false
+      },
       "blocks": {
-        "collection_RYgwec": {
-          "type": "collection",
+        "slide_1": {
+          "type": "slide",
           "settings": {
-            "collection": ""
+            "eyebrow": "Fresh arrivals",
+            "heading": "Build your store around a strong first impression",
+            "text": "<p>Use this hero to spotlight a campaign, collection, or bestselling product right away.</p>",
+            "button_label": "Shop now",
+            "button_link": ""
           }
         },
-        "collection_68NM3A": {
-          "type": "collection",
+        "slide_2": {
+          "type": "slide",
           "settings": {
-            "collection": ""
-          }
-        },
-        "collection_9T9dgW": {
-          "type": "collection",
-          "settings": {
-            "collection": ""
+            "eyebrow": "Seasonal promotion",
+            "heading": "Rotate slides automatically and keep the message moving",
+            "text": "<p>Control image timing, mobile and desktop height, parallax, and lazy loading directly in the editor.</p>",
+            "button_label": "Explore more",
+            "button_link": ""
           }
         }
       },
       "block_order": [
-        "collection_RYgwec",
-        "collection_68NM3A",
-        "collection_9T9dgW"
-      ],
-      "name": "Collection list",
-      "settings": {
-        "heading": "Shop collections",
-        "show_section_divider": false,
-        "collections_per_row": 3,
-        "add_spacing": true
-      }
+        "slide_1",
+        "slide_2"
+      ]
     }
   },
   "order": [
-    "main",
-    "scrolling_text_M44UKU",
-    "image_with_text_aFKBUw",
-    "collection_list_yr74nq"
+    "main"
   ]
 }

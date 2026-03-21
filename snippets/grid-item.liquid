@@ -2,31 +2,104 @@
   assign card_product = product
   assign card_sizes = sizes | default: '100vw'
   assign placeholder_number = placeholder_index | default: 1
+  assign tile_image_size = settings.product_tile_image_size | default: 'square'
+  assign quick_shop_label = settings.quick_shop_button_text | strip | default: 'Quick view'
+  assign show_quick_shop = settings.enable_quick_shop
+  assign zoom_image = settings.product_tile_zoom_image
+  assign show_second_image = settings.product_tile_show_second_image
+  assign show_swatches = settings.enable_color_swatches
+  assign swatch_style = settings.product_tile_swatch_style | default: 'round'
+  assign secondary_image = blank
+  assign color_option = blank
+
+  if card_product != blank and show_second_image and card_product.images.size > 1
+    assign secondary_image = card_product.images[1]
+  endif
+
+  if card_product != blank and show_swatches
+    for option in card_product.options_with_values
+      assign option_name = option.name | downcase
+
+      if option_name contains 'color' or option_name contains 'colour'
+        assign color_option = option
+        break
+      endif
+    endfor
+  endif
 %}
 
-<article class="featured-collection-card">
+<article class="product-tile product-tile--{{ tile_image_size }}{% if zoom_image and tile_image_size != 'natural' %} product-tile--zoom{% endif %}{% if secondary_image != blank %} product-tile--has-secondary{% endif %}">
   {% if card_product != blank %}
-    <a class="featured-collection-card__link" href="{{ card_product.url }}">
-      <div class="featured-collection-card__media">
+    <a class="product-tile__link" href="{{ card_product.url }}">
+      <div class="product-tile__media">
         {% if card_product.featured_image != blank %}
           {{
             card_product.featured_image
             | image_url: width: 900
             | image_tag:
-              class: 'featured-collection-card__image',
+              class: 'product-tile__image product-tile__image--primary',
               widths: '320, 480, 640, 900',
               sizes: card_sizes,
               loading: 'lazy',
               alt: card_product.featured_image.alt | default: card_product.title
           }}
+
+          {% if secondary_image != blank %}
+            {{
+              secondary_image
+              | image_url: width: 900
+              | image_tag:
+                class: 'product-tile__image product-tile__image--secondary',
+                widths: '320, 480, 640, 900',
+                sizes: card_sizes,
+                loading: 'lazy',
+                alt: secondary_image.alt | default: card_product.title
+            }}
+          {% endif %}
         {% else %}
-          {{ 'product-1' | placeholder_svg_tag: 'featured-collection-card__image featured-collection-card__image--placeholder' }}
+          {{ 'product-1' | placeholder_svg_tag: 'product-tile__image product-tile__image--placeholder' }}
+        {% endif %}
+
+        {% if show_quick_shop %}
+          <span class="product-tile__quick-shop button button--secondary">{{ quick_shop_label }}</span>
         {% endif %}
       </div>
 
-      <div class="featured-collection-card__content">
-        <h3 class="featured-collection-card__title">{{ card_product.title | escape }}</h3>
-        <p class="featured-collection-card__price">{{ card_product.price | money }}</p>
+      <div class="product-tile__content">
+        <h3 class="product-tile__title">{{ card_product.title | escape }}</h3>
+        <p class="product-tile__price">{{ card_product.price | money }}</p>
+
+        {% if color_option != blank %}
+          <div class="product-tile__swatches product-tile__swatches--{{ swatch_style }}" aria-label="{{ color_option.name | escape }}">
+            {% for value in color_option.values limit: 6 %}
+              {% liquid
+                assign swatch_name = value.name | default: value
+                assign swatch_available = true
+                assign swatch_color = value.swatch.color | default: swatch_name | downcase
+                assign swatch_image = value.swatch.image
+
+                if value.available == false
+                  assign swatch_available = false
+                endif
+              %}
+
+              <span
+                class="product-tile__swatch{% unless swatch_available %} product-tile__swatch--unavailable{% endunless %}"
+                title="{{ swatch_name | escape }}"
+                aria-label="{{ swatch_name | escape }}"
+                {% if swatch_image != blank %}
+                  style="background-image: url('{{ swatch_image | image_url: width: 48 }}');"
+                {% else %}
+                  style="background-color: {{ swatch_color }};"
+                {% endif %}
+              ></span>
+            {% endfor %}
+
+            {% if color_option.values.size > 6 %}
+              <span class="product-tile__swatch-count">+{{ color_option.values.size | minus: 6 }}</span>
+            {% endif %}
+          </div>
+        {% endif %}
       </div>
     </a>
   {% else %}
@@ -34,14 +107,14 @@
       assign placeholder_name = 'product-' | append: placeholder_number
     %}
 
-    <div class="featured-collection-card__link featured-collection-card__link--placeholder">
-      <div class="featured-collection-card__media">
-        {{ placeholder_name | placeholder_svg_tag: 'featured-collection-card__image featured-collection-card__image--placeholder' }}
+    <div class="product-tile__link product-tile__link--placeholder">
+      <div class="product-tile__media">
+        {{ placeholder_name | placeholder_svg_tag: 'product-tile__image product-tile__image--placeholder' }}
       </div>
 
-      <div class="featured-collection-card__content">
-        <h3 class="featured-collection-card__title">{{ 'Product' | append: ' ' | append: placeholder_number }}</h3>
-        <p class="featured-collection-card__price">{{ 1999 | money }}</p>
+      <div class="product-tile__content">
+        <h3 class="product-tile__title">{{ 'Product' | append: ' ' | append: placeholder_number }}</h3>
+        <p class="product-tile__price">{{ 1999 | money }}</p>
       </div>
     </div>
   {% endif %}
