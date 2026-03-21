@@ -10,8 +10,77 @@
 {
   "sections": {
     "main": {
-      "type": "product",
-      "settings": {}
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "vendor",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "variants": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_style": "swatch",
+            "show_size_chart": false,
+            "size_chart_label": "Size guide"
+          }
+        },
+        "quantity": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "inventory": {
+          "type": "inventory",
+          "settings": {}
+        },
+        "buy": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "sticky_label": "Add to cart"
+          }
+        },
+        "accordion": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Details",
+            "content": "<p>Use this space for sizing, materials, care instructions, or brand notes.</p>",
+            "placement": "below_gallery"
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "price",
+        "description",
+        "variants",
+        "quantity",
+        "inventory",
+        "buy",
+        "accordion"
+      ],
+      "settings": {
+        "gallery_layout": "carousel_bottom_thumbnails",
+        "mobile_gallery_mode": "dots",
+        "desktop_info_width": 40,
+        "enable_sticky_info": true,
+        "enable_sticky_bar": true,
+        "show_related_products": true,
+        "related_heading": "You may also like",
+        "related_count": 4
+      }
     }
   },
   "order": [

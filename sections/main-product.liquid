@@ -1,0 +1,346 @@
+{% comment %}
+  Premium product page composed from a media gallery and block-driven product info.
+{% endcomment %}
+
+{{ 'product-page.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-page.js' | asset_url }}" defer></script>
+
+{% liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign lower_zone_types = 'accordion,text,image,button,complementary_products,share' | split: ','
+%}
+
+<section
+  class="product-shell section-{{ section.id }}"
+  data-product-section
+  data-section-id="{{ section.id }}"
+  data-product-url="{{ product.url }}"
+  style="
+    --product-info-width: {{ section.settings.desktop_info_width }}%;
+    --product-gallery-width: {{ 100 | minus: section.settings.desktop_info_width }}%;
+  "
+>
+  <script type="application/json" data-product-json>
+    {{ product | json }}
+  </script>
+
+  <div class="product-shell__grid">
+    <div class="product-shell__gallery-column">
+      {% render 'product-gallery', product: product, section: section, current_variant: current_variant %}
+    </div>
+
+    <div class="product-shell__info-column {% if section.settings.enable_sticky_info %}product-shell__info-column--sticky{% endif %}">
+      {% render 'product-info', product: product, section: section, current_variant: current_variant, placement: 'info' %}
+    </div>
+  </div>
+
+  {% assign has_lower_content = false %}
+  {% for block in section.blocks %}
+    {% if lower_zone_types contains block.type and block.settings.placement == 'below_gallery' %}
+      {% assign has_lower_content = true %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+  {% if has_lower_content %}
+    <div class="product-shell__lower-zone">
+      <div class="product-shell__lower-zone-inner">
+        {% render 'product-info', product: product, section: section, current_variant: current_variant, placement: 'below_gallery' %}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if section.settings.show_related_products %}
+    {% assign related_products = product.related_products | default: recommendations.products %}
+    {% if related_products != blank %}
+      <div class="product-shell__related">
+        <div class="product-shell__related-header">
+          <h2>{{ section.settings.related_heading }}</h2>
+        </div>
+        <div class="product-shell__related-grid">
+          {% for related_product in related_products limit: section.settings.related_count %}
+            <article class="product-shell__related-card">
+              <a href="{{ related_product.url }}" class="product-shell__related-link">
+                <div class="product-shell__related-media">
+                  {% if related_product.featured_image %}
+                    {{
+                      related_product.featured_image
+                      | image_url: width: 800
+                      | image_tag: loading: 'lazy', class: 'product-shell__related-image'
+                    }}
+                  {% endif %}
+                </div>
+                <div class="product-shell__related-content">
+                  <p class="product-shell__related-title">{{ related_product.title }}</p>
+                  <p class="product-shell__related-price">
+                    {{ related_product.price | money }}
+                  </p>
+                </div>
+              </a>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Main product",
+  "tag": "section",
+  "class": "shopify-section--main-product",
+  "settings": [
+    {
+      "type": "select",
+      "id": "gallery_layout",
+      "label": "Desktop gallery layout",
+      "default": "carousel_bottom_thumbnails",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "two_column_grid", "label": "Two-column grid" },
+        { "value": "highlight", "label": "Highlighted grid" },
+        { "value": "carousel_left_thumbnails", "label": "Carousel with left thumbnails" },
+        { "value": "carousel_bottom_thumbnails", "label": "Carousel with bottom thumbnails" },
+        { "value": "carousel_dots", "label": "Carousel with dots" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mobile_gallery_mode",
+      "label": "Mobile gallery mode",
+      "default": "dots",
+      "options": [
+        { "value": "dots", "label": "Dots" },
+        { "value": "arrows", "label": "Arrows" },
+        { "value": "thumbnails", "label": "Thumbnails" },
+        { "value": "free_scroll", "label": "Free scroll" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "desktop_info_width",
+      "label": "Desktop info width",
+      "min": 32,
+      "max": 48,
+      "step": 2,
+      "default": 40,
+      "unit": "%"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_info",
+      "label": "Enable sticky info column",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_bar",
+      "label": "Enable sticky add to cart bar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_related_products",
+      "label": "Show related products",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "related_heading",
+      "label": "Related products heading",
+      "default": "You may also like"
+    },
+    {
+      "type": "range",
+      "id": "related_count",
+      "label": "Related products count",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "blocks": [
+    { "type": "vendor", "name": "Vendor", "limit": 1 },
+    { "type": "title", "name": "Title", "limit": 1 },
+    { "type": "sku", "name": "SKU", "limit": 1 },
+    {
+      "type": "badges",
+      "name": "Badges",
+      "settings": [
+        { "type": "text", "id": "badge_1", "label": "Badge 1" },
+        { "type": "text", "id": "badge_2", "label": "Badge 2" },
+        { "type": "text", "id": "badge_3", "label": "Badge 3" }
+      ]
+    },
+    { "type": "price", "name": "Price", "limit": 1 },
+    {
+      "type": "rating",
+      "name": "Rating",
+      "settings": [
+        { "type": "range", "id": "rating", "label": "Rating", "min": 0, "max": 5, "step": 0.1, "default": 4.6 },
+        { "type": "range", "id": "rating_count", "label": "Review count", "min": 0, "max": 100, "step": 1, "default": 38 }
+      ]
+    },
+    { "type": "payment_terms", "name": "Payment terms", "limit": 1 },
+    { "type": "separator", "name": "Separator" },
+    { "type": "description", "name": "Description", "limit": 1 },
+    {
+      "type": "variant_picker",
+      "name": "Variant picker",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "picker_style",
+          "label": "Picker style",
+          "default": "swatch",
+          "options": [
+            { "value": "dropdown", "label": "Dropdown" },
+            { "value": "pill", "label": "Pills" },
+            { "value": "swatch", "label": "Swatches" }
+          ]
+        },
+        { "type": "checkbox", "id": "show_size_chart", "label": "Show size guide on Size option", "default": false },
+        { "type": "text", "id": "size_chart_label", "label": "Size guide label", "default": "Size guide" }
+      ]
+    },
+    { "type": "quantity_selector", "name": "Quantity selector", "limit": 1 },
+    { "type": "inventory", "name": "Inventory", "limit": 1 },
+    {
+      "type": "buy_buttons",
+      "name": "Buy buttons",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout", "default": true },
+        { "type": "text", "id": "sticky_label", "label": "Sticky bar button label", "default": "Add to cart" }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading" },
+        { "type": "richtext", "id": "content", "label": "Content" },
+        {
+          "type": "select",
+          "id": "placement",
+          "label": "Placement",
+          "default": "info",
+          "options": [
+            { "value": "info", "label": "Info column" },
+            { "value": "below_gallery", "label": "Below gallery" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "Accordion",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Details" },
+        { "type": "richtext", "id": "content", "label": "Content" },
+        {
+          "type": "select",
+          "id": "placement",
+          "label": "Placement",
+          "default": "below_gallery",
+          "options": [
+            { "value": "info", "label": "Info column" },
+            { "value": "below_gallery", "label": "Below gallery" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "caption", "label": "Caption" },
+        {
+          "type": "select",
+          "id": "placement",
+          "label": "Placement",
+          "default": "below_gallery",
+          "options": [
+            { "value": "info", "label": "Info column" },
+            { "value": "below_gallery", "label": "Below gallery" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Learn more" },
+        { "type": "url", "id": "link", "label": "Link" },
+        {
+          "type": "select",
+          "id": "placement",
+          "label": "Placement",
+          "default": "info",
+          "options": [
+            { "value": "info", "label": "Info column" },
+            { "value": "below_gallery", "label": "Below gallery" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "share",
+      "name": "Share",
+      "settings": [
+        {
+          "type": "select",
+          "id": "placement",
+          "label": "Placement",
+          "default": "info",
+          "options": [
+            { "value": "info", "label": "Info column" },
+            { "value": "below_gallery", "label": "Below gallery" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "complementary_products",
+      "name": "Complementary products",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Pairs well with" },
+        { "type": "product_list", "id": "products", "label": "Products" },
+        {
+          "type": "select",
+          "id": "placement",
+          "label": "Placement",
+          "default": "below_gallery",
+          "options": [
+            { "value": "info", "label": "Info column" },
+            { "value": "below_gallery", "label": "Below gallery" }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Main product",
+      "blocks": [
+        { "type": "vendor" },
+        { "type": "title" },
+        { "type": "price" },
+        { "type": "description" },
+        { "type": "variant_picker" },
+        { "type": "quantity_selector" },
+        { "type": "inventory" },
+        { "type": "buy_buttons" }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}
