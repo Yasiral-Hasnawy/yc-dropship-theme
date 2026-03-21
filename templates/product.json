@@ -72,7 +72,7 @@
         "accordion"
       ],
       "settings": {
-        "gallery_layout": "carousel_bottom_thumbnails",
+        "gallery_layout": "carousel_left_thumbnails",
         "mobile_gallery_mode": "dots",
         "desktop_info_width": 40,
         "enable_sticky_info": true,
