@@ -24,10 +24,6 @@
           "type": "price",
           "settings": {}
         },
-        "description": {
-          "type": "description",
-          "settings": {}
-        },
         "variants": {
           "type": "variant_picker",
           "settings": {
@@ -51,6 +47,10 @@
             "sticky_label": "Add to cart"
           }
         },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
         "accordion": {
           "type": "accordion",
           "settings": {
@@ -64,11 +64,11 @@
         "vendor",
         "title",
         "price",
-        "description",
         "variants",
         "quantity",
         "inventory",
         "buy",
+        "description",
         "accordion"
       ],
       "settings": {
