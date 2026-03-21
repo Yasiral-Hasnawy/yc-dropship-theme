@@ -14,22 +14,52 @@
     "announcement_bar": {
       "type": "announcement-bar",
       "settings": {
-        "display_mode": "ticker"
+        "display_mode": "ticker",
+        "autoplay": true,
+        "autoplay_interval": 4,
+        "scroll_speed": 25,
+        "background": "#111111",
+        "text_color": "#ffffff",
+        "alignment": "center"
       }
     },
     "announcement_bar_2": {
       "type": "announcement-bar",
       "settings": {
-        "display_mode": "slider"
+        "display_mode": "slider",
+        "autoplay": true,
+        "autoplay_interval": 4,
+        "scroll_speed": 25,
+        "background": "#111111",
+        "text_color": "#ffffff",
+        "alignment": "center"
       }
     },
     "custom_liquid": {
       "type": "custom-liquid",
-      "settings": {}
+      "settings": {
+        "custom_liquid": ""
+      }
     },
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "logo": "shopify://shop_images/Naamloos_45.png",
+        "logo_width": 160,
+        "menu": "",
+        "enable_dropdown_hover": true,
+        "show_mega_menu_images": true,
+        "header_layout": "logo-left-menu-center",
+        "header_style": "sticky",
+        "overlay_homepage": false,
+        "overlay_collection": false,
+        "show_language_selector": false,
+        "show_currency_selector": false,
+        "show_currency_flags": false,
+        "show_account_icon": true,
+        "mobile_menu_title": "Menu",
+        "customer_account_menu": "customer-account-main-menu"
+      }
     }
   },
   "order": [
