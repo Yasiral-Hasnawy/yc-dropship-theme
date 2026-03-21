@@ -1,14 +1,23 @@
 {% if product.has_only_default_variant == false %}
   <div class="product-info__variants" data-variant-picker>
+    {% liquid
+      assign color_trigger_words = block.settings.color_trigger_words | default: 'color, colour, couleur' | downcase | split: ','
+    %}
     {% for option in product.options_with_values %}
       {% liquid
         assign option_name_downcase = option.name | downcase
         assign is_color = false
         assign is_size = false
         assign picker_mode = 'normal'
-        if option_name_downcase contains 'color' or option_name_downcase contains 'colour'
-          assign is_color = true
-        endif
+
+        for trigger_word in color_trigger_words
+          assign normalized_trigger_word = trigger_word | strip
+          if normalized_trigger_word != blank and option_name_downcase == normalized_trigger_word
+            assign is_color = true
+            break
+          endif
+        endfor
+
         if option_name_downcase contains 'size'
           assign is_size = true
         endif
