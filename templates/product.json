@@ -31,9 +31,9 @@
         "variants": {
           "type": "variant_picker",
           "settings": {
-            "color_display": "variant_image",
+            "color_display": "color_swatch",
             "color_trigger_words": "color, colour, couleur",
-            "show_color_labels": false,
+            "show_color_labels": true,
             "show_size_chart": false,
             "size_chart_label": "Size guide"
           }
