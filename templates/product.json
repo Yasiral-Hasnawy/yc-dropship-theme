@@ -12,64 +12,65 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "vendor": {
-          "type": "vendor",
-          "settings": {}
-        },
         "title": {
           "type": "title",
           "settings": {}
         },
         "price": {
           "type": "price",
-          "settings": {}
+          "settings": {
+            "price_color": "#111111",
+            "compare_price_color": "#6B7280",
+            "price_size": 32,
+            "compare_price_size": 18,
+            "compare_price_position": "after",
+            "show_savings_badge": false,
+            "savings_badge_format": "percent",
+            "savings_badge_background": "#F3F4F6",
+            "savings_badge_text": "#111111"
+          }
         },
         "description": {
           "type": "description",
-          "settings": {}
+          "settings": {
+            "display_style": "open",
+            "accordion_heading": ""
+          }
         },
         "variants": {
           "type": "variant_picker",
           "settings": {
-            "color_display": "color_swatch",
+            "color_display": "variant_image",
             "color_trigger_words": "color, colour, couleur",
-            "show_color_labels": false,
+            "show_color_labels": true,
             "show_size_chart": false,
-            "size_chart_label": "Size guide"
+            "size_chart_label": ""
           }
         },
         "quantity": {
           "type": "quantity_selector",
           "settings": {}
         },
-        "inventory": {
-          "type": "inventory",
-          "settings": {}
-        },
         "buy": {
           "type": "buy_buttons",
           "settings": {
-            "show_dynamic_checkout": true,
-            "sticky_label": "Add to cart"
+            "sticky_label": ""
           }
         },
         "accordion": {
           "type": "accordion",
           "settings": {
-            "heading": "Details",
-            "content": "<p>Use this space for sizing, materials, care instructions, or brand notes.</p>",
-            "placement": "below_gallery"
+            "heading": "",
+            "content": "<p>Use this space for sizing, materials, care instructions, or brand notes.</p>"
           }
         }
       },
       "block_order": [
-        "vendor",
         "title",
         "price",
         "description",
         "variants",
         "quantity",
-        "inventory",
         "buy",
         "accordion"
       ],
@@ -80,7 +81,7 @@
         "enable_sticky_info": true,
         "enable_sticky_bar": true,
         "show_related_products": true,
-        "related_heading": "You may also like",
+        "related_heading": "",
         "related_count": 4
       }
     }

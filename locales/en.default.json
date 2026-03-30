@@ -1,4 +1,16 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
+  "accessibility": {
+    "skip_to_content": "Skip to content"
+  },
   "404": {
     "title": "404",
     "not_found": "Page not found.",
@@ -17,7 +29,33 @@
     "checkout": "Checkout",
     "title": "Cart",
     "update": "Update",
-    "remove": "Remove"
+    "remove": "Remove",
+    "subtotal": "Subtotal",
+    "continue_shopping": "Continue shopping",
+    "secure_checkout": "Secure checkout",
+    "empty_title": "Your cart is empty",
+    "empty_message": "Add something you love and it will appear here.",
+    "item_count": {
+      "one": "{{ count }} item",
+      "other": "{{ count }} items"
+    },
+    "order_summary": "Order summary",
+    "order_note": "Order note",
+    "order_note_placeholder": "Add delivery notes or special instructions",
+    "quantity_for_product": "Quantity for {{ product }}",
+    "decrease_quantity": "Decrease quantity",
+    "increase_quantity": "Increase quantity",
+    "drawer": {
+      "close": "Close cart",
+      "eyebrow": "Your cart",
+      "upgrade_complete": "You unlocked all available cart upgrades.",
+      "upgrade_remaining_html": "{{ amount }} to {{ reward }}",
+      "live_region": "Cart updated. {{ count }} items. Subtotal {{ subtotal }}."
+    }
+  },
+  "general": {
+    "close": "Close",
+    "customer": "Customer"
   },
   "customers": {
     "login": {
@@ -28,7 +66,19 @@
     }
   },
   "collections": {
-    "title": "Collections"
+    "title": "Collections",
+    "product_count": {
+      "one": "{{ count }} product",
+      "other": "{{ count }} products"
+    },
+    "sort_by": "Sort by",
+    "filters": "Filters",
+    "clear_filters": "Clear filters",
+    "apply_filters": "Apply filters",
+    "price_from": "Price from",
+    "price_to": "Price to",
+    "no_products_title": "No products found",
+    "no_products_message": "Try adjusting or clearing your filters."
   },
   "gift_card": {
     "add_to_apple_wallet": "Add to Apple Wallet",
@@ -47,6 +97,45 @@
     "placeholder": "Search articles, pages, or products",
     "submit": "Search",
     "no_results_html": "No results found for {{ terms }}",
-    "results_for_html": "{{ count }} results found for {{ terms }}"
+    "results_for_html": "{{ count }} results found for {{ terms }}",
+    "empty_title": "No matching results",
+    "results_label": "Results",
+    "result_type_product": "Product",
+    "result_type_article": "Article",
+    "result_type_page": "Page"
+  },
+  "product": {
+    "add_to_cart": "Add to cart",
+    "adding_to_cart": "Adding...",
+    "sold_out": "Sold out",
+    "unavailable": "Unavailable",
+    "variant": "Variant",
+    "quantity": "Quantity",
+    "description": "Description",
+    "details": "Details",
+    "related_products": "You may also like",
+    "customer_avatar_alt": "Customer",
+    "sku": "SKU: {{ value }}",
+    "size_guide": {
+      "close": "Close size guide"
+    },
+    "gallery": {
+      "open_media": "Open media for {{ title }}",
+      "zoom": "Zoom",
+      "unavailable": "Media unavailable",
+      "previous": "Previous media",
+      "show_media": "Show media {{ index }}",
+      "go_to_media": "Go to media {{ index }}",
+      "next": "Next media",
+      "close_zoomed_media": "Close zoomed media"
+    },
+    "inventory": {
+      "in_stock_count": "{{ count }} in stock",
+      "available_to_order": "Available to order"
+    },
+    "price": {
+      "savings_badge_percent": "Save {{ value }} today",
+      "savings_badge_amount": "Save {{ value }} today"
+    }
   }
 }

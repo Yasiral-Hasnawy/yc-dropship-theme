@@ -22,15 +22,21 @@
 
     {% # Social, title, etc. %}
     {% render 'meta-tags' %}
+    {{ 'cart-drawer.css' | asset_url | stylesheet_tag }}
 
     {{ content_for_header }}
   </head>
 
   <body>
+    <a class="skip-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
     {% sections 'header-group' %}
+    {% render 'cart-drawer' %}
 
-    {{ content_for_layout }}
+    <main id="MainContent" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
 
     {% sections 'footer-group' %}
+    <script src="{{ 'cart-drawer.js' | asset_url }}" defer></script>
   </body>
 </html>

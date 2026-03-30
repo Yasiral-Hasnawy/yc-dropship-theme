@@ -2,6 +2,7 @@
   <div class="product-info__variants" data-variant-picker>
     {% liquid
       assign color_trigger_words = block.settings.color_trigger_words | default: 'color, colour, couleur' | downcase | split: ','
+      assign size_chart_trigger_words = block.settings.size_chart_trigger_words | default: 'size, sizes' | downcase | split: ','
     %}
     {% for option in product.options_with_values %}
       {% liquid
@@ -18,9 +19,13 @@
           endif
         endfor
 
-        if option_name_downcase contains 'size'
-          assign is_size = true
-        endif
+        for trigger_word in size_chart_trigger_words
+          assign normalized_trigger_word = trigger_word | strip
+          if normalized_trigger_word != blank and option_name_downcase == normalized_trigger_word
+            assign is_size = true
+            break
+          endif
+        endfor
         if is_color
           assign picker_mode = block.settings.color_display | default: 'color_swatch'
         endif
@@ -41,16 +46,29 @@
           {% for value in option.values %}
             {% liquid
               assign normalized_value = value | strip | downcase
-              assign button_classes = 'product-info__option-button'
-              assign button_classes = button_classes | append: ' '
-              assign button_classes = button_classes | append: 'product-info__option-button--' | append: picker_mode
+              if picker_mode == 'color_swatch'
+                assign button_classes = 'product-info__color-swatch'
+              else
+                assign button_classes = 'product-info__option-button'
+                assign button_classes = button_classes | append: ' '
+                assign button_classes = button_classes | append: 'product-info__option-button--' | append: picker_mode
+              endif
               assign button_style = ''
               assign image_markup = ''
               assign swatch_label_style = ''
               assign swatch_image = blank
+              assign uses_color_label_setting = false
 
               if value == option.selected_value
                 assign button_classes = button_classes | append: ' is-active'
+              endif
+
+              if is_color and picker_mode == 'color_swatch'
+                assign uses_color_label_setting = true
+              endif
+
+              if is_color and picker_mode == 'variant_image'
+                assign uses_color_label_setting = true
               endif
 
               if picker_mode == 'color_swatch'
@@ -98,8 +116,10 @@
               type="button"
               class="{{ button_classes }}"
               data-option-button
+              data-option-position="{{ option.position }}"
               data-option-name="{{ option.name }}"
               data-option-value="{{ value | escape }}"
+              aria-pressed="{% if value == option.selected_value %}true{% else %}false{% endif %}"
               {% if button_style != blank %}
                 style="{{ button_style }}"
               {% endif %}
@@ -111,8 +131,12 @@
                   <span class="product-info__option-image-wrap product-info__option-image-wrap--fallback">{{ value | slice: 0 }}</span>
                 {% endif %}
               {% endif %}
-              {% if picker_mode != 'color_swatch' or block.settings.show_color_labels %}
-                <span class="product-info__option-label" {% if swatch_label_style != blank %}style="{{ swatch_label_style }}"{% endif %}>{{ value }}</span>
+              {% if uses_color_label_setting %}
+                {% if block.settings.show_color_labels %}
+                  <span class="{% if picker_mode == 'color_swatch' %}product-info__color-swatch-label{% else %}product-info__option-label{% endif %}" {% if swatch_label_style != blank %}style="{{ swatch_label_style }}"{% endif %}>{{ value }}</span>
+                {% endif %}
+              {% else %}
+                <span class="product-info__option-label">{{ value }}</span>
               {% endif %}
             </button>
           {% endfor %}
@@ -120,4 +144,50 @@
       </fieldset>
     {% endfor %}
   </div>
+
+  {% if block.settings.show_size_chart %}
+    <dialog class="product-info__size-chart-modal" data-size-chart-modal>
+      <div class="product-info__size-chart-shell">
+        <button
+          type="button"
+          class="product-info__size-chart-close"
+          data-size-chart-close
+          aria-label="{{ 'product.size_guide.close' | t }}"
+        >
+          {{ 'general.close' | t }}
+        </button>
+
+        {% if block.settings.size_chart_heading != blank %}
+          <h2 class="product-info__size-chart-heading">{{ block.settings.size_chart_heading }}</h2>
+        {% endif %}
+
+        {% if block.settings.size_chart_intro != blank %}
+          <div class="product-info__size-chart-copy rte">{{ block.settings.size_chart_intro }}</div>
+        {% endif %}
+
+        {% if block.settings.size_chart_table != blank %}
+          <div class="product-info__size-chart-table rte">
+            {{ block.settings.size_chart_table }}
+          </div>
+        {% endif %}
+
+        {% if block.settings.size_chart_image != blank %}
+          <div class="product-info__size-chart-image-wrap">
+            {{
+              block.settings.size_chart_image
+              | image_url: width: 1800
+              | image_tag:
+                loading: 'lazy',
+                class: 'product-info__size-chart-image',
+                alt: block.settings.size_chart_image_alt
+            }}
+          </div>
+        {% endif %}
+
+        {% if block.settings.size_chart_footer != blank %}
+          <div class="product-info__size-chart-copy rte">{{ block.settings.size_chart_footer }}</div>
+        {% endif %}
+      </div>
+    </dialog>
+  {% endif %}
 {% endif %}

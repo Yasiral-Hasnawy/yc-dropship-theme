@@ -11,14 +11,10 @@
   >
     <span data-add-to-cart-label>
       {% if current_variant.available %}
-        Add to cart
+        {{ 'product.add_to_cart' | t }}
       {% else %}
-        Sold out
+        {{ 'product.sold_out' | t }}
       {% endif %}
     </span>
   </button>
-
-  {% if block.settings.show_dynamic_checkout %}
-    {{ form | payment_button }}
-  {% endif %}
 </div>
